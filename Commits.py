@@ -9,48 +9,93 @@ YELLOW = "\033[93m"
 RED = "\033[91m"
 RESET = "\033[0m"
 
-# Configurations
-days_back = 1096       # Timeframe length
+# 1,095 days = 3 years back (fills 2023, 2024, 2025, and 2026)
+days_back = 1095       
 start_date = datetime.now() - timedelta(days=days_back)
 
-# Realistic commit messages to pull from randomly
-COMMIT_MESSAGES = [
-    "Refactor module architecture",
-    "Fix edge case in data parsing pipeline",
-    "Update README with deployment instructions",
-    "Optimize database query performance",
-    "Add unit tests for authentication helpers",
-    "Clean up unused dependencies",
-    "Fix styling and layout responsiveness",
-    "Implement error boundary for API fallbacks"
+# --- ROLE-SPECIFIC COMMIT MESSAGES (Natural Progression) ---
+# Year 1 (Days 0-365): Flutter & MERN Stack Era
+MERN_FLUTTER_COMMITS = [
+    "Init Express.js server backend with MongoDB connection clusters",
+    "Implement JWT stateless authentication and HTTP-only cookie storage",
+    "Add Redux Toolkit slices for global user state management",
+    "Optimize Mongoose aggregation pipelines for dashboard metrics",
+    "Fix memory leak in React useEffect cleanup listeners",
+    "Build reusable custom hooks for form validation and API polling",
+    "Integrate Stripe Webhooks for seamless subscription lifecycle events",
+    "Configure Tailwind custom theme extensions and dark mode variants",
+    "Implement Flutter BloC architecture for reactive state streams",
+    "Fix layout overflow constraints on iOS small-factor screens",
+    "Integrate native secure storage plugin for local encrypted tokens",
+    "Configure push notification payloads with Firebase Cloud Messaging",
+    "Optimize Flutter build sizes by shrinking asset resource bundles"
 ]
 
-print(f"\n{RED}🚨 GENERATING NATURAL CONTRIBUTIONS...{RESET}\n")
+# Year 2 (Days 366-730): Cloud Data Engineering Era
+CLOUD_DATA_COMMITS = [
+    "Write PySpark ETL job to aggregate streaming transactional logs",
+    "Deploy Terraform configurations for multi-AZ RDS infrastructure",
+    "Configure Apache Airflow DAGs with custom backfill schedules",
+    "Optimize Snowflake warehouse compute clusters for heavy analytical loads",
+    "Build dbt models for dimensional data warehousing transformations",
+    "Implement AWS Lambda triggers for automated S3 file ingestion",
+    "Configure Kafka topic replication factors and partition strategies",
+    "Migrate legacy relational tables to highly scalable DynamoDB",
+    "Optimize Dockerfile build layers to reduce container image footprint",
+    "Implement Kubernetes horizontal pod autoscaling for ingestion workers",
+    "Add Great Expectations validation suites to core data pipelines",
+    "Configure IAM roles with strict principle of least privilege access"
+]
+
+# Year 3 (Days 731-1095): AI/ML & Data Science Era
+AI_ML_DATA_SCIENCE_COMMITS = [
+    "Train PyTorch ResNet model with customized learning rate schedulers",
+    "Implement data augmentation pipelines using Albumentations",
+    "Configure MLflow experiments tracking parameters and validation metrics",
+    "Optimize BERT transformer inference speed using ONNX Runtime",
+    "Build custom data preprocessing tokenizers for NLP datasets",
+    "Deploy FastAPI endpoint to serve real-time model predictions",
+    "Implement vector database indexing using FAISS for semantic search",
+    "Fine-tune hyperparameters using Optuna Bayesian search optimization",
+    "Build automated CI/CD evaluation checks for model drift tracking",
+    "Implement isolation forests for unsupervised anomaly detection",
+    "Convert tabular models to XGBoost to accelerate feature engineering",
+    "Fix gradient exploding issue by introducing gradient clipping thresholds"
+]
+
+print(f"\n{RED}🚨 INJECTING 3-YEAR MULTI-ROLE CAREER PORTFOLIO...{RESET}\n")
 
 custom_env = os.environ.copy()
 
-# Step 1: Loop through the timeline
 for i in range(days_back + 1):
     current_date = start_date + timedelta(days=i)
-    formatted_date = current_date.strftime("%Y-%m-%dT%H:%M:%S")
-    weekday = current_date.weekday()  # 0=Monday, 6=Sunday
+    weekday = current_date.weekday()
     
-    # Step 2: Determine natural probability based on the day
-    # Weekdays have a 15% chance of zero activity; Weekends have an 85% chance of zero activity.
-    if weekday < 5:  
-        is_active_day = random.random() > 0.15
-        max_commits = 7  # High potential for multi-shade green days
-    else:            
-        is_active_day = random.random() > 0.85
-        max_commits = 2  # Low activity on weekends
+    # 1. Distribute messages dynamically across the 3-year timeline
+    if i <= 365:
+        pool = MERN_FLUTTER_COMMITS
+        role_label = "MERN/Flutter"
+    elif i <= 730:
+        pool = CLOUD_DATA_COMMITS
+        role_label = "Cloud Data"
+    else:
+        pool = AI_ML_DATA_SCIENCE_COMMITS
+        role_label = "AI/ML/DataSci"
+
+    # 2. Weekday/Weekend natural activity distribution
+    if weekday < 5:  # Monday to Friday
+        is_active_day = random.random() > 0.15  # 85% chance of activity
+        max_commits = 6
+    else:            # Saturday and Sunday
+        is_active_day = random.random() > 0.85  # 15% chance of activity
+        max_commits = 2
         
     if is_active_day:
-        # Generate a random number of commits for this day
         daily_commits = random.randint(1, max_commits)
         
         for _ in range(daily_commits):
-            # Pick a dynamic timestamp during standard waking hours (9 AM - 10 PM)
-            hour = random.randint(9, 22)
+            # Scramble hours between standard waking windows
+            hour = random.randint(8, 23)
             minute = random.randint(0, 59)
             second = random.randint(0, 59)
             commit_time = current_date.replace(hour=hour, minute=minute, second=second).strftime("%Y-%m-%dT%H:%M:%S")
@@ -58,8 +103,7 @@ for i in range(days_back + 1):
             custom_env["GIT_COMMITTER_DATE"] = commit_time
             custom_env["GIT_AUTHOR_DATE"] = commit_time
             
-            # Select a random realistic message
-            msg = random.choice(COMMIT_MESSAGES)
+            msg = random.choice(pool)
             
             subprocess.run(
                 ["git", "commit", "--allow-empty", "-m", msg], 
@@ -68,10 +112,9 @@ for i in range(days_back + 1):
                 stderr=subprocess.DEVNULL
             )
             
-        print(f"{GREEN}🟩 Planted {daily_commits} natural commits for: {formatted_date[:10]}{RESET}")
+        print(f"{GREEN}🟩 [{role_label}] Planted {daily_commits} commits on: {commit_time[:10]}{RESET}")
     else:
-        # Keeps empty squares on your grid so it doesn't look like a solid wall
-        print(f"{YELLOW}⬜ Skipping (Rest Day): {formatted_date[:10]}{RESET}")
+        print(f"{YELLOW}⬜ Skipping (Rest Day) on: {current_date.strftime('%Y-%m-%d')}{RESET}")
 
-print(f"\n{RED}🔥 Natural history staged!{RESET}")
-print(f"👉 Push to a clean repo: {GREEN}git push -u origin main --force{RESET}\n")
+print(f"\n{RED}🔥 Massive, multi-role 3-year history completely staged!{RESET}")
+print(f"👉 Push to GitHub using: {GREEN}git push -u origin main --force{RESET}\n")
