@@ -116,5 +116,5 @@ for i in range(days_back + 1):
     else:
         print(f"{YELLOW}⬜ Skipping (Rest Day) on: {current_date.strftime('%Y-%m-%d')}{RESET}")
 
-# print(f"\n{RED}🔥 Massive, multi-role 3-year history completely staged!{RESET}")
-# print(f"👉 Push to GitHub using: {GREEN}git push -u origin main --force{RESET}\n")
+print(f"\n{RED}🔥 Massive, multi-role 3-year history completely staged!{RESET}")
+print(f"👉 Push to GitHub using: {GREEN}git push -u origin main --force{RESET}\n")
